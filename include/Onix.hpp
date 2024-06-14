@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <thread>
 #ifdef USE_HEADERS
 #include "Window.hpp"
 #include "Buffers.hpp"

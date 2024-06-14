@@ -39,17 +39,24 @@ int main(void) {
   //  Positions[i].y = ft;
   //  ft += 0.1f;
   //};
-  glm::vec3 translations[10];
-  int index = 0;
-  float offset = 0.1f;
-  for(int y = -10; y < 10; y += 2) {
-    for(int x = -10; x < 10; x += 2) {
-        glm::vec3 translation;
-        translation.x = (float)x / 10.0f + offset;
-        translation.y = (float)y / 10.0f + offset;
-        translations[index++] = translation;
+  auto TRANS_LOAD_FUNC = [&](glm::vec3 data[10]) -> void {
+    int index = 0;
+    float offset = 0.1f;
+    for(int y = -10; y < 10; y += 2) {
+      for(int x = -10; x < 10; x += 2) {
+          glm::vec3 translation;
+          translation.x = (float)x / 10.0f + offset;
+          translation.y = (float)y / 10.0f + offset;
+          data[index++] = translation;
+      }
     }
-  } 
+  };
+  glm::vec3 translations[10];
+  std::thread TRANSLATION_GENERATOR_THREAD(TRANS_LOAD_FUNC, translations);
+  fprintf(stderr, "IS JOINABLE: %x", TO_STRING(TRANSLATION_GENERATOR_THREAD.joinable()));
+  if(TRANSLATION_GENERATOR_THREAD.joinable()) {
+    TRANSLATION_GENERATOR_THREAD.join();
+  }
   //Onix::Buffer VAO(GL_VERTEX_ARRAY);
   //VAO.Bind();
   //Onix::Buffer VBO(GL_ARRAY_BUFFER, sizeof(Triangles), Triangles, GL_STATIC_DRAW);
