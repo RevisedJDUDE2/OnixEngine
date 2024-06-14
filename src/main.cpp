@@ -5,6 +5,7 @@
 
 //# EXTERNALS
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 int main(void) {
   Onix::Init_GLFW();
@@ -60,7 +61,9 @@ int main(void) {
 
   glGenBuffers(1, &INSTANCED);
   glBindBuffer(GL_ARRAY_BUFFER, INSTANCED);
-  glBufferData(GL_ARRAY_BUFFER, count * 3 * sizeof(float), &Positions[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, count * sizeof(glm::vec3), &Positions[0], GL_STATIC_DRAW);
+  fprintf(stdout, "Size of instanced: %d", count * 3 * sizeof(float));
+  fflush(stdout);
 
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -71,10 +74,11 @@ int main(void) {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertices), (void*)offsetof(Vertices, Position));
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertices), (void*)offsetof(Vertices, Color));
-  glBindBuffer(GL_ARRAY_BUFFER, INSTANCED);
   glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
+  glBindBuffer(GL_ARRAY_BUFFER, INSTANCED);
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glVertexAttribDivisor(2, 1);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
   while (!glfwWindowShouldClose(MainWindow.Get())) {
