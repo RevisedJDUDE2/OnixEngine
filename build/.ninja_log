@@ -1,0 +1,9 @@
+# ninja log v6
+45	1108	7400491869043582	CMakeFiles/OnixEngine.dir/src/Window.cpp.obj	b346a5379193532a
+22	1114	7400491868783357	CMakeFiles/OnixEngine.dir/src/Buffers.cpp.obj	fec46d0aabe015a3
+29	1120	7400491868843576	CMakeFiles/OnixEngine.dir/src/Onix.cpp.obj	e0c5a3ef66a0fcd9
+19	336	7400498807337077	build.ninja	563f87b6abfb08f0
+25	697	7400492769093069	CMakeFiles/OnixEngine.dir/src/Shader.cpp.obj	b237b031632f1c55
+9	1034	7400497598792340	CMakeFiles/OnixEngine.dir/src/main.cpp.obj	fc94c1bd6c164dd
+42	1310	7400498856123610	CMakeFiles/OnixEngine.dir/src/glad.c.obj	55483dd73b2e73f6
+1314	1539	7400498868794667	OnixEngine.exe	69bdef9e8001cf31

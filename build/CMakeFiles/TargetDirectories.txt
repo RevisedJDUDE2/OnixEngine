@@ -1,0 +1,3 @@
+C:/Users/User/Documents/C++/OnixEngine/build/CMakeFiles/OnixEngine.dir
+C:/Users/User/Documents/C++/OnixEngine/build/CMakeFiles/edit_cache.dir
+C:/Users/User/Documents/C++/OnixEngine/build/CMakeFiles/rebuild_cache.dir
