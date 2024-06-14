@@ -50,6 +50,7 @@ int main(void) {
   //glVertexAttribDivisor(2, 1);
   //VAO.Unbind();
   GLuint VAO, VBO, EBO, INSTANCED;
+  //this is for testing porpuses
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
 
@@ -72,7 +73,7 @@ int main(void) {
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertices), (void*)offsetof(Vertices, Color));
   glBindBuffer(GL_ARRAY_BUFFER, INSTANCED);
   glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
   glVertexAttribDivisor(2, 1);
   glBindVertexArray(0);
 
