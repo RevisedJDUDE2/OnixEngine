@@ -1,16 +1,9 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <thread>
-#ifdef USE_HEADERS
+#include "Essentials.hpp"
 #include "Window.hpp"
 #include "Buffers.hpp"
 #include "Shader.hpp"
-#endif
 
 typedef struct {
   float Position[3];
@@ -24,4 +17,6 @@ namespace Onix {
   void Init_GL(void);
   void Init_GLAD(void);
   void SetVertexAttribPointer(int Index, int Count, GLsizei Stride, const GLvoid* Offset);
+  void SetVertexAttribPointer(Onix::Buffer& buff, int Index, int Count, GLsizei Stride, const GLvoid* Offset);
+  void EnableVertexAttrib(Onix::Buffer& buff, int Index);
 }

@@ -1,4 +1,5 @@
 #include "Onix.hpp"
+#include "Buffers.hpp"
 
 void Onix::ThrowError(std::string ErrorMessage) {
   std::cout << "[ERROR]: " << ErrorMessage << std::endl;
@@ -29,5 +30,17 @@ void Onix::Init_GLAD(void) {
 
 void Onix::SetVertexAttribPointer(int Index, int Count, GLsizei Stride, const GLvoid* Offset) {
   glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
+  glEnableVertexAttribArray(Index);
+}
+
+void Onix::SetVertexAttribPointer(Onix::Buffer& buff, int Index, int Count, GLsizei Stride, const GLvoid* Offset) {
+  glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
+  if(buff.GetStatus() != true) {
+    glEnableVertexAttribArray(Index);
+  }
+}
+
+void Onix::EnableVertexAttrib(Onix::Buffer& buff, int Index) {
+  buff.SetCalled(true);
   glEnableVertexAttribArray(Index);
 }

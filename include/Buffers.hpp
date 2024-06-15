@@ -1,5 +1,5 @@
 #pragma once
-#include "Onix.hpp"
+#include "Essentials.hpp"
 
 namespace Onix {
   class Buffer {
@@ -9,6 +9,8 @@ namespace Onix {
     bool hsntbuff;
     /**@brief tells to NOT automatically bind the current buffer on Buffer() called*/
     bool automaticBinding = false;
+    /**@brief tells the Onix::EnableVertexAttrib to enable at index */
+    bool m_has_called_enable = false;
   public:
     /** @brief basically its just glGenBuffers()*/
     void InitBuffer(void);
@@ -18,5 +20,8 @@ namespace Onix {
     void Unbind(void) const;
     /**@brief a function to set the automaticBinding to true or false*/
     void SetConfigs(int i, bool CONFIG);
+    //USAGE OF this->m_has_called_enable = c params
+    void SetCalled(bool c);
+    bool GetStatus(void) const;
   };
 }

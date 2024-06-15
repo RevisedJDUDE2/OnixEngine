@@ -44,3 +44,11 @@ void Onix::Buffer::SetConfigs(int i, bool CONFIG) {
     this->hsntbuff = CONFIG;
   }
 };
+
+void Onix::Buffer::SetCalled(bool c) {
+  this->m_has_called_enable = c;
+}
+
+bool Onix::Buffer::GetStatus(void) const {
+  return this->m_has_called_enable;
+}
