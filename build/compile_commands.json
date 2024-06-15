@@ -1,0 +1,38 @@
+[
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\Buffers.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Buffers.cpp",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Buffers.cpp",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\Buffers.cpp.obj"
+},
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\Onix.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Onix.cpp",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Onix.cpp",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\Onix.cpp.obj"
+},
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\Shader.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Shader.cpp",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Shader.cpp",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\Shader.cpp.obj"
+},
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\Window.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Window.cpp",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Window.cpp",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\Window.cpp.obj"
+},
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\glad.c.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\glad.c",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\glad.c",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\glad.c.obj"
+},
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\main.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\main.cpp",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\main.cpp",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\main.cpp.obj"
+}
+]
