@@ -52,6 +52,9 @@ int main(void) {
     if (glfwGetKey(MainWindow.Get(), GLFW_KEY_W)) {
       translations[0].x += 0.1f;
     }
+    int maxx, maxy;
+    glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
+    glViewport(0, 0, maxx, maxy);
     GLuint loc = glGetUniformLocation(Program.GetHandle(), "INSTANCED");
     glUniform2f(loc, translations[0].x, translations[0].y);
     fprintf(stdout, "translation[0].x = %d\r", translations[0].x);
