@@ -6,3 +6,4 @@
 #include <vector>
 #include <thread>
 #include <stdexcept> //EXCEPT
+#include <algorithm>

@@ -8,9 +8,6 @@
 #include <glm/ext.hpp>
 
 int main(void) {
-  glm::vec2 translations[10];
-  translations[0].x = -0.5f;
-  translations[0].y = 0.0f;
   Onix::Init_GLFW();
   Onix::Window MainWindow("Onix Sample", 800, 600);
   //Onix::Init_GL(); use this for GLEW
@@ -21,7 +18,17 @@ int main(void) {
   Onix::Shader FragmentShader("default.frag.glsl", GL_FRAGMENT_SHADER);
   FragmentShader.CheckError();
   Onix::Shader Program(GL_TYPE_EX_SHADER_PROGRAM, VertexShader, FragmentShader);
-  Onix::Buffer Instanced(GL_ARRAY_BUFFER, 10 * sizeof(glm::vec2), &translations[0], GL_STATIC_DRAW);
+  //Onix::Buffer Instanced(GL_ARRAY_BUFFER, 10 * sizeof(glm::vec2), &translations[0], GL_STATIC_DRAW);//2vec
+
+  //glm::mat4 *MODEL_MATRICES = new glm::mat4[10];
+  std::unique_ptr<glm::mat4[]> MODEL_MATRICES(new glm::mat4[10]);
+  for(unsigned int i = 0; i < 10; i++) {
+    MODEL_MATRICES[i] = glm::mat4(1.0f);
+  }
+  MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(-1.0f, -1.0f, 0.0));
+  MODEL_MATRICES[1] = glm::translate(MODEL_MATRICES[0], glm::vec3(-1.5f, -1.5f, 0.0));
+  Onix::Buffer Instanced(GL_ARRAY_BUFFER, 10 * sizeof(glm::mat4), &MODEL_MATRICES[0], GL_STATIC_DRAW);//2vec
+
   Vertices Triangles[4] = {
     { { -0.5, -0.5, 0.0 }, { 1.0, 0.0, 0.0 }, { 0.0, 0.0 } },
     { {  0.5, -0.5, 0.0 }, { 0.0, 1.0, 0.0 }, { 0.0, 0.0 } },
@@ -33,6 +40,7 @@ int main(void) {
     0, 3, 2
   };
 
+
 #pragma region BUFFERS
 
   Onix::Buffer VAO(GL_VERTEX_ARRAY);
@@ -41,22 +49,45 @@ int main(void) {
   Onix::Buffer EBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
   Onix::SetVertexAttribPointer(0, 3, sizeof(Vertices), (void*)offsetof(Vertices, Position));
   Onix::SetVertexAttribPointer(1, 3, sizeof(Vertices), (void*)offsetof(Vertices, Color));
-  Onix::EnableVertexAttrib(VBO, 2);
   Instanced.Bind();
-  Onix::SetVertexAttribPointer(VBO, 2, 2, 2 * sizeof(float), (void*)0);
-  VBO.Unbind();
+  GLsizei vec4Size = sizeof(glm::vec4);
+
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+
+  glEnableVertexAttribArray(3);
+  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(1 * vec4Size));
+
+  glEnableVertexAttribArray(4);
+  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(2 * vec4Size));
+
+  glEnableVertexAttribArray(5);
+  glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(3 * vec4Size));
+
   glVertexAttribDivisor(2, 1);
+  glVertexAttribDivisor(3, 1);
+  glVertexAttribDivisor(4, 1);
+  glVertexAttribDivisor(5, 1);
+  VBO.Unbind();
+  //glVertexAttribDivisor(2, 1);
+  //glVertexAttribDivisor(3, 1);
+  //glVertexAttribDivisor(4, 1);
+  //glVertexAttribDivisor(5, 1);
 
 #pragma endregion
-
+  float x = 0.0f;
+  float last;
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     Program.UseProgram();
-    if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D)) {
-      translations[0].x -= 0.1f;
+    float curr = (float)glfwGetTime(), delta = curr - last;
+    last = curr;
+    if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D) == GLFW_PRESS) {
+      x += 1.0f * delta;
     }
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
+
 
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 proj = glm::mat4(1.0f);
@@ -67,9 +98,8 @@ int main(void) {
     glUniformMatrix4fv(Projection_Location, 1, GL_FALSE, glm::value_ptr(proj));
     glUniformMatrix4fv(View_Location, 1, GL_FALSE, &view[0][0]);
 
-    GLuint loc = glGetUniformLocation(Program.GetHandle(), "INSTANCED[0]");
-    glUniform2f(loc, translations[0].x, translations[0].y);
-    fprintf(stdout, "translation[0].x = %d\r", translations[0].x);
+    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0f));
+
     VAO.Bind();
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10);
     glBindVertexArray(0);
