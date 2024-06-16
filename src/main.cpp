@@ -1,3 +1,7 @@
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include "Onix.hpp"
 #include "Window.hpp"
 #include "Buffers.hpp"
@@ -9,6 +13,10 @@
 
 int main(void) {
   Onix::Init_GLFW();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   Onix::Window MainWindow("Onix Sample", 800, 600);
   //Onix::Init_GL(); use this for GLEW
   Onix::Init_GLAD(); //AND THIS FOR GLAD
@@ -19,7 +27,14 @@ int main(void) {
   FragmentShader.CheckError();
   Onix::Shader Program(GL_TYPE_EX_SHADER_PROGRAM, VertexShader, FragmentShader);
   //Onix::Buffer Instanced(GL_ARRAY_BUFFER, 10 * sizeof(glm::vec2), &translations[0], GL_STATIC_DRAW);//2vec
-
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO(); (void)io;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+  ImGui::StyleColorsDark();
+  ImGui_ImplGlfw_InitForOpenGL(MainWindow.Get(), true);
+  ImGui_ImplOpenGL3_Init("#version 330 core");
   //glm::mat4 *MODEL_MATRICES = new glm::mat4[10];
   std::unique_ptr<glm::mat4[]> MODEL_MATRICES(new glm::mat4[10]);
   for(unsigned int i = 0; i < 10; i++) {
@@ -77,6 +92,7 @@ int main(void) {
 #pragma endregion
   float x = 0.0f;
   float last;
+  bool demo = true;
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     Program.UseProgram();
@@ -86,7 +102,7 @@ int main(void) {
       x += 1.0f * delta;
     }
     int maxx, maxy;
-    glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
+    glfwGetFramebufferSize(MainWindow.Get(), &maxx, &maxy);
 
 
     glm::mat4 view = glm::mat4(1.0f);
@@ -105,6 +121,21 @@ int main(void) {
     glBindVertexArray(0);
     glfwSwapBuffers(MainWindow.Get());
     glfwPollEvents();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    if(demo)
+      ImGui::ShowDemoWindow(&demo);
+    {
+      ImGui::Begin("Hello");
+      ImGui::Text("Hello From Onix");
+      ImGui::End();
+    }
+    ImGui::EndFrame();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   }
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
   return 0;
 }

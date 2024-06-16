@@ -84,6 +84,55 @@ build CMakeFiles/OnixEngine.dir/src/glad.c.obj: C_COMPILER__OnixEngine_unscanned
   OBJECT_DIR = CMakeFiles\OnixEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
 
+build CMakeFiles/OnixEngine.dir/src/imgui.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
+build CMakeFiles/OnixEngine.dir/src/imgui_demo.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui_demo.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui_demo.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
+build CMakeFiles/OnixEngine.dir/src/imgui_draw.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui_draw.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui_draw.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
+build CMakeFiles/OnixEngine.dir/src/imgui_impl_glfw.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui_impl_glfw.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui_impl_glfw.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
+build CMakeFiles/OnixEngine.dir/src/imgui_impl_opengl3.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui_impl_opengl3.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
+build CMakeFiles/OnixEngine.dir/src/imgui_tables.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui_tables.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui_tables.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
+build CMakeFiles/OnixEngine.dir/src/imgui_widgets.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/imgui_widgets.cpp || cmake_object_order_depends_target_OnixEngine
+  DEP_FILE = CMakeFiles\OnixEngine.dir\src\imgui_widgets.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/User/Documents/C++/OnixEngine/./include
+  OBJECT_DIR = CMakeFiles\OnixEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\OnixEngine.dir\src
+
 build CMakeFiles/OnixEngine.dir/src/main.cpp.obj: CXX_COMPILER__OnixEngine_unscanned_Debug C$:/Users/User/Documents/C++/OnixEngine/src/main.cpp || cmake_object_order_depends_target_OnixEngine
   DEP_FILE = CMakeFiles\OnixEngine.dir\src\main.cpp.obj.d
   FLAGS = -g
@@ -99,7 +148,7 @@ build CMakeFiles/OnixEngine.dir/src/main.cpp.obj: CXX_COMPILER__OnixEngine_unsca
 #############################################
 # Link the executable OnixEngine.exe
 
-build OnixEngine.exe: CXX_EXECUTABLE_LINKER__OnixEngine_Debug CMakeFiles/OnixEngine.dir/src/Buffers.cpp.obj CMakeFiles/OnixEngine.dir/src/Onix.cpp.obj CMakeFiles/OnixEngine.dir/src/Shader.cpp.obj CMakeFiles/OnixEngine.dir/src/Window.cpp.obj CMakeFiles/OnixEngine.dir/src/glad.c.obj CMakeFiles/OnixEngine.dir/src/main.cpp.obj
+build OnixEngine.exe: CXX_EXECUTABLE_LINKER__OnixEngine_Debug CMakeFiles/OnixEngine.dir/src/Buffers.cpp.obj CMakeFiles/OnixEngine.dir/src/Onix.cpp.obj CMakeFiles/OnixEngine.dir/src/Shader.cpp.obj CMakeFiles/OnixEngine.dir/src/Window.cpp.obj CMakeFiles/OnixEngine.dir/src/glad.c.obj CMakeFiles/OnixEngine.dir/src/imgui.cpp.obj CMakeFiles/OnixEngine.dir/src/imgui_demo.cpp.obj CMakeFiles/OnixEngine.dir/src/imgui_draw.cpp.obj CMakeFiles/OnixEngine.dir/src/imgui_impl_glfw.cpp.obj CMakeFiles/OnixEngine.dir/src/imgui_impl_opengl3.cpp.obj CMakeFiles/OnixEngine.dir/src/imgui_tables.cpp.obj CMakeFiles/OnixEngine.dir/src/imgui_widgets.cpp.obj CMakeFiles/OnixEngine.dir/src/main.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lglfw3  -lopengl32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Users/User/Documents/C++/OnixEngine/./lib
