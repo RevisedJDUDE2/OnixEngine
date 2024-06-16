@@ -33,6 +33,8 @@ int main(void) {
     0, 3, 2
   };
 
+#pragma region BUFFERS
+
   Onix::Buffer VAO(GL_VERTEX_ARRAY);
   VAO.Bind();
   Onix::Buffer VBO(GL_ARRAY_BUFFER, sizeof(Triangles), Triangles, GL_STATIC_DRAW);
@@ -45,19 +47,30 @@ int main(void) {
   VBO.Unbind();
   glVertexAttribDivisor(2, 1);
 
+#pragma endregion
+
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     Program.UseProgram();
-    VAO.Bind();
-    if (glfwGetKey(MainWindow.Get(), GLFW_KEY_W)) {
-      translations[0].x += 0.1f;
+    if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D)) {
+      translations[0].x -= 0.1f;
     }
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
-    glViewport(0, 0, maxx, maxy);
-    GLuint loc = glGetUniformLocation(Program.GetHandle(), "INSTANCED");
+
+    glm::mat4 view = glm::mat4(1.0f);
+    glm::mat4 proj = glm::mat4(1.0f);
+    proj = glm::perspective(glm::radians(80.0f), (float)maxx/(float)maxy, 0.1f, 100.f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
+    GLuint Projection_Location = glGetUniformLocation(Program.GetHandle(), "proj");
+    GLuint View_Location = glGetUniformLocation(Program.GetHandle(), "view");
+    glUniformMatrix4fv(Projection_Location, 1, GL_FALSE, glm::value_ptr(proj));
+    glUniformMatrix4fv(View_Location, 1, GL_FALSE, &view[0][0]);
+
+    GLuint loc = glGetUniformLocation(Program.GetHandle(), "INSTANCED[0]");
     glUniform2f(loc, translations[0].x, translations[0].y);
     fprintf(stdout, "translation[0].x = %d\r", translations[0].x);
+    VAO.Bind();
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10);
     glBindVertexArray(0);
     glfwSwapBuffers(MainWindow.Get());

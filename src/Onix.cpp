@@ -11,7 +11,8 @@ void Onix::ThrowError(std::string ErrorMessage, std::string type) {
 
 void Onix::Init_GLFW(void) {
   if (!glfwInit()) {
-    Onix::ThrowError("Opengl was not supported on your device.", "[DEBUG]");
+    //Onix::ThrowError("Opengl was not supported on your device.", "[DEBUG]");
+    throw std::runtime_error("OpenGL was not supported on your device!");
   }
 }
 #ifdef USE_GLAD
