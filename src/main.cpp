@@ -102,7 +102,7 @@ int main(void) {
     }
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
-
+    glViewport(0, 0, maxx, maxy);
 
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 proj = glm::mat4(1.0f);
