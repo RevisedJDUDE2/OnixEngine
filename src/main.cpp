@@ -38,11 +38,8 @@ int main(void) {
   //glm::mat4 *MODEL_MATRICES = new glm::mat4[10];
   std::unique_ptr<glm::mat4[]> MODEL_MATRICES(new glm::mat4[10]);
   for(int i = 0; i < 10; i++) {
-    MODEL_MATRICES[i] = glm::mat4(1.0f);
-    fprintf(stdout, "Initialized mat4[%d] = 1.0f\n", i);
+    MODEL_MATRICES[i] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)); // Place all instances at origin
   }
-  MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(-1.0f, -1.0f, 0.0));
-  MODEL_MATRICES[1] = glm::translate(MODEL_MATRICES[0], glm::vec3(-1.5f, -1.5f, 0.0));
   Onix::Buffer Instanced(GL_ARRAY_BUFFER, 10 * sizeof(glm::mat4), &MODEL_MATRICES[0], GL_STATIC_DRAW);//2vec
 
   Vertices Triangles[4] = {
@@ -66,19 +63,19 @@ int main(void) {
   Onix::SetVertexAttribPointer(0, 3, sizeof(Vertices), (void*)offsetof(Vertices, Position));
   Onix::SetVertexAttribPointer(1, 3, sizeof(Vertices), (void*)offsetof(Vertices, Color));
   Instanced.Bind();
-  GLsizei vec4Size = sizeof(glm::vec4);
+  std::size_t vec4Size = sizeof(glm::vec4);
 
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
 
   glEnableVertexAttribArray(3);
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(1 * vec4Size));
+  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
 
   glEnableVertexAttribArray(4);
-  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(2 * vec4Size));
+  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
 
   glEnableVertexAttribArray(5);
-  glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(3 * vec4Size));
+  glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
   glVertexAttribDivisor(2, 1);
   glVertexAttribDivisor(3, 1);
   glVertexAttribDivisor(4, 1);
@@ -88,7 +85,7 @@ int main(void) {
 #pragma endregion
   float x = 0.0f;
   float last;
-  bool demo = true;
+  bool op = false;
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_NewFrame();
@@ -98,7 +95,10 @@ int main(void) {
     float curr = (float)glfwGetTime(), delta = curr - last;
     last = curr;
     if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D) == GLFW_PRESS) {
-      x += 1.0f * delta;
+      MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(0.8 * delta, 0.0f, 0.0));
+      glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
+      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
+      glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
@@ -106,9 +106,8 @@ int main(void) {
 
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 proj = glm::mat4(1.0f);
-    proj = glm::perspective(glm::radians(80.0f), (float)maxx/(float)maxy, 0.1f, 100.f);
+    proj = glm::perspective(glm::radians(100.0f), (float)maxx/(float)maxy, 0.1f, 100.f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
-    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0f));
     GLuint Projection_Location = glGetUniformLocation(Program.GetHandle(), "proj");
     GLuint View_Location = glGetUniformLocation(Program.GetHandle(), "view");
     glUniformMatrix4fv(Projection_Location, 1, GL_FALSE, glm::value_ptr(proj));
@@ -119,9 +118,17 @@ int main(void) {
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10);
     glBindVertexArray(0);
     {
-      ImGui::Begin("Hello");
-      ImGui::Text("Hello From Onix");
+      ImGui::Begin("Onix Debugger");
+      ImGui::Text("you can change the following value");
       ImGui::SliderFloat("Position of 0", &x, 0.0f, 3.0f, "VALUE: %.5f");
+      if(ImGui::Button("Get 0 Quad Pos[0].x (Vec4)", ImVec2(250, 100))) {
+        ImGui::OpenPopup("err1");
+        op = true;
+      }
+      if (ImGui::BeginPopupModal("Oops", &op,ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("Value: %.5f", MODEL_MATRICES[0][0].x); // Access model matrix element correctly
+        ImGui::EndPopup();
+      }
       ImGui::End();
     }
     ImGui::EndFrame();

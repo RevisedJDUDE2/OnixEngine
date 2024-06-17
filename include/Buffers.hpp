@@ -23,5 +23,6 @@ namespace Onix {
     //USAGE OF this->m_has_called_enable = c params
     void SetCalled(bool c);
     bool GetStatus(void) const;
+    unsigned int Get(void) const noexcept;
   };
 }

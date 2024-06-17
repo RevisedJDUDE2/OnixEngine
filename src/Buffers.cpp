@@ -52,3 +52,6 @@ void Onix::Buffer::SetCalled(bool c) {
 bool Onix::Buffer::GetStatus(void) const {
   return this->m_has_called_enable;
 }
+unsigned int Onix::Buffer::Get(void) const noexcept {
+  return this->m_Handle;
+}
