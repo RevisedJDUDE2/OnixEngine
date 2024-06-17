@@ -37,8 +37,9 @@ int main(void) {
   ImGui_ImplOpenGL3_Init("#version 330 core");
   //glm::mat4 *MODEL_MATRICES = new glm::mat4[10];
   std::unique_ptr<glm::mat4[]> MODEL_MATRICES(new glm::mat4[10]);
-  for(unsigned int i = 0; i < 10; i++) {
+  for(int i = 0; i < 10; i++) {
     MODEL_MATRICES[i] = glm::mat4(1.0f);
+    fprintf(stdout, "Initialized mat4[%d] = 1.0f\n", i);
   }
   MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(-1.0f, -1.0f, 0.0));
   MODEL_MATRICES[1] = glm::translate(MODEL_MATRICES[0], glm::vec3(-1.5f, -1.5f, 0.0));
@@ -78,16 +79,11 @@ int main(void) {
 
   glEnableVertexAttribArray(5);
   glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, reinterpret_cast<void*>(3 * vec4Size));
-
   glVertexAttribDivisor(2, 1);
   glVertexAttribDivisor(3, 1);
   glVertexAttribDivisor(4, 1);
   glVertexAttribDivisor(5, 1);
   VBO.Unbind();
-  //glVertexAttribDivisor(2, 1);
-  //glVertexAttribDivisor(3, 1);
-  //glVertexAttribDivisor(4, 1);
-  //glVertexAttribDivisor(5, 1);
 
 #pragma endregion
   float x = 0.0f;
@@ -95,6 +91,9 @@ int main(void) {
   bool demo = true;
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();;
     Program.UseProgram();
     float curr = (float)glfwGetTime(), delta = curr - last;
     last = curr;
@@ -102,40 +101,35 @@ int main(void) {
       x += 1.0f * delta;
     }
     int maxx, maxy;
-    glfwGetFramebufferSize(MainWindow.Get(), &maxx, &maxy);
+    glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
 
 
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 proj = glm::mat4(1.0f);
     proj = glm::perspective(glm::radians(80.0f), (float)maxx/(float)maxy, 0.1f, 100.f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
+    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0f));
     GLuint Projection_Location = glGetUniformLocation(Program.GetHandle(), "proj");
     GLuint View_Location = glGetUniformLocation(Program.GetHandle(), "view");
     glUniformMatrix4fv(Projection_Location, 1, GL_FALSE, glm::value_ptr(proj));
     glUniformMatrix4fv(View_Location, 1, GL_FALSE, &view[0][0]);
 
-    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0f));
 
     VAO.Bind();
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10);
     glBindVertexArray(0);
-    glfwSwapBuffers(MainWindow.Get());
-    glfwPollEvents();
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-    if(demo)
-      ImGui::ShowDemoWindow(&demo);
     {
       ImGui::Begin("Hello");
       ImGui::Text("Hello From Onix");
+      ImGui::SliderFloat("Position of 0", &x, 0.0f, 3.0f, "VALUE: %.5f");
       ImGui::End();
     }
     ImGui::EndFrame();
+    ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glfwSwapBuffers(MainWindow.Get());
+    glfwPollEvents();
+
   }
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
   return 0;
 }
