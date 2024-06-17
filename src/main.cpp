@@ -29,7 +29,7 @@ int main(void) {
   //Onix::Buffer Instanced(GL_ARRAY_BUFFER, 10 * sizeof(glm::vec2), &translations[0], GL_STATIC_DRAW);//2vec
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO(); (void)io;
+  ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
   ImGui::StyleColorsDark();
@@ -118,14 +118,16 @@ int main(void) {
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10);
     glBindVertexArray(0);
     {
-      ImGui::Begin("Onix Debugger");
+      ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_FirstUseEver);
+      ImGui::SetNextWindowSize(ImVec2(344.0f, 187.0f), ImGuiCond_FirstUseEver);
+      ImGui::Begin("Onix Debugger", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
       ImGui::Text("you can change the following value");
       ImGui::SliderFloat("Position of 0", &x, 0.0f, 3.0f, "VALUE: %.5f");
       if(ImGui::Button("Get 0 Quad Pos[0].x (Vec4)", ImVec2(250, 100))) {
         ImGui::OpenPopup("err1");
         op = true;
       }
-      if (ImGui::BeginPopupModal("Oops", &op,ImGuiWindowFlags_AlwaysAutoResize)) {
+      if (ImGui::BeginPopupModal("err1", &op,ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::Text("Value: %.5f", MODEL_MATRICES[0][0].x); // Access model matrix element correctly
         ImGui::EndPopup();
       }
