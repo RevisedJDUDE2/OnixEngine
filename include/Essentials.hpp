@@ -7,3 +7,4 @@
 #include <thread>
 #include <stdexcept> //EXCEPT
 #include <algorithm>
+#include <functional>

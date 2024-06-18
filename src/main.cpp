@@ -32,7 +32,7 @@ int main(void) {
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-  ImGui::StyleColorsDark();
+  ImGui::StyleColorsLight();
   ImGui_ImplGlfw_InitForOpenGL(MainWindow.Get(), true);
   ImGui_ImplOpenGL3_Init("#version 330 core");
   //glm::mat4 *MODEL_MATRICES = new glm::mat4[10];
@@ -87,6 +87,9 @@ int main(void) {
   float last;
   bool op = false;
   float speed = 0.01;
+  bool dm = false;
+  std::vector<float> history;
+  float rgb[3] = {0.0f, 0.0f, 1.0f};
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_NewFrame();
@@ -101,6 +104,7 @@ int main(void) {
     if(glfwGetKey(MainWindow.Get(), GLFW_KEY_A) == GLFW_PRESS) {
       x -= speed * delta;
     }
+    history.push_back(x);
     MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
     glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
@@ -122,25 +126,41 @@ int main(void) {
     VAO.Bind();
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10);
     glBindVertexArray(0);
+
+    #pragma region IMGUI
+
+    if(dm)
+      ImGui::ShowDemoWindow(&dm);
     {
+      ImGuiStyle& styles = ImGui::GetStyle();
+      styles.FrameRounding = 4.0f;
+      styles.FrameBorderSize = 1.5f;
       ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_FirstUseEver);
-      ImGui::SetNextWindowSize(ImVec2(344.0f, 187.0f), ImGuiCond_FirstUseEver);
-      ImGui::Begin("Onix Debugger", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+      ImGui::SetNextWindowSize(ImVec2(270.0f, 900.0f), ImGuiCond_FirstUseEver);
+      ImGui::Begin("Onix Debugger", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings);
+      ImGui::SetWindowFontScale(1.3f);
       ImGui::Text("you can change the following value");
       ImGui::SliderFloat("##", &delta, 0.0f, 9.0f, "VALUE: %.5f");
-      if(ImGui::Button("Get 0 Quad Pos[0].x (Vec4)", ImVec2(200, 50))) {
-        ImGui::OpenPopup("err1");
-        op = true;
+      //ImGui::ProgressBar(delta, ImVec2(200.0f, 20.0f));
+      ImGui::SliderFloat("##", &speed, -1.0f, 5.0f, " = %.9f");
+      ImGui::PlotLines("##", &history[0], history.size(), 0, NULL, FLT_MIN, FLT_MAX, ImVec2(0, 80));
+      if(ImGui::Button("Change Background Color"))
+        ImGui::OpenPopup("colorpicker");
+      if(ImGui::BeginPopup("colorpicker")) {
+        ImGui::ColorPicker4("Clear Screen Color", rgb);
+        ImGui::End();
       }
-      if (ImGui::BeginPopupModal("err1", &op,ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("Value: %.5f", MODEL_MATRICES[0][0].x); // Access model matrix element correctly
-        ImGui::EndPopup();
-      }
+      if(ImGui::Button("Show Demo Window"))
+        dm = true;
       ImGui::End();
     }
     ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    #pragma endregion
+
+    glClearColor(rgb[0], rgb[1], rgb[2], 1.0f);
     glfwSwapBuffers(MainWindow.Get());
     glfwPollEvents();
 
