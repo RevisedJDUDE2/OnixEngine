@@ -86,6 +86,7 @@ int main(void) {
   float x = 0.0f;
   float last;
   bool op = false;
+  float speed = 0.01;
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_NewFrame();
@@ -95,12 +96,15 @@ int main(void) {
     float curr = (float)glfwGetTime(), delta = curr - last;
     last = curr;
     if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D) == GLFW_PRESS) {
-      x += 0.001 * delta;
-      MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
-      glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
-      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
-      glBindBuffer(GL_ARRAY_BUFFER, 0);
+      x += speed * delta;
     }
+    if(glfwGetKey(MainWindow.Get(), GLFW_KEY_A) == GLFW_PRESS) {
+      x -= speed * delta;
+    }
+    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
+    glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
     glViewport(0, 0, maxx, maxy);
@@ -123,7 +127,7 @@ int main(void) {
       ImGui::SetNextWindowSize(ImVec2(344.0f, 187.0f), ImGuiCond_FirstUseEver);
       ImGui::Begin("Onix Debugger", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
       ImGui::Text("you can change the following value");
-      ImGui::SliderFloat("Position of 0", &x, 0.0f, 3.0f, "VALUE: %.5f");
+      ImGui::SliderFloat("##", &delta, 0.0f, 9.0f, "VALUE: %.5f");
       if(ImGui::Button("Get 0 Quad Pos[0].x (Vec4)", ImVec2(200, 50))) {
         ImGui::OpenPopup("err1");
         op = true;
