@@ -95,11 +95,12 @@ int main(void) {
     float curr = (float)glfwGetTime(), delta = curr - last;
     last = curr;
     if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D) == GLFW_PRESS) {
-      MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(0.8 * delta, 0.0f, 0.0));
+      x += 0. * delta;
       glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
       glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
       glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
     glViewport(0, 0, maxx, maxy);
