@@ -95,12 +95,12 @@ int main(void) {
     float curr = (float)glfwGetTime(), delta = curr - last;
     last = curr;
     if (glfwGetKey(MainWindow.Get(), GLFW_KEY_D) == GLFW_PRESS) {
-      x += 0. * delta;
+      x += 0.001 * delta;
+      MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
       glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
       glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
       glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
-    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
     int maxx, maxy;
     glfwGetWindowSize(MainWindow.Get(), &maxx, &maxy);
     glViewport(0, 0, maxx, maxy);
@@ -124,7 +124,7 @@ int main(void) {
       ImGui::Begin("Onix Debugger", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
       ImGui::Text("you can change the following value");
       ImGui::SliderFloat("Position of 0", &x, 0.0f, 3.0f, "VALUE: %.5f");
-      if(ImGui::Button("Get 0 Quad Pos[0].x (Vec4)", ImVec2(250, 100))) {
+      if(ImGui::Button("Get 0 Quad Pos[0].x (Vec4)", ImVec2(200, 50))) {
         ImGui::OpenPopup("err1");
         op = true;
       }
@@ -141,5 +141,11 @@ int main(void) {
     glfwPollEvents();
 
   }
+  glDeleteProgram(Program.GetHandle());
+  glfwDestroyWindow(MainWindow.Get());
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+  glfwTerminate();
   return 0;
 }
