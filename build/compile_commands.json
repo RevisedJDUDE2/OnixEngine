@@ -13,6 +13,12 @@
 },
 {
   "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\Onix_Physics.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Onix_Physics.cpp",
+  "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Onix_Physics.cpp",
+  "output": "CMakeFiles\\OnixEngine.dir\\src\\Onix_Physics.cpp.obj"
+},
+{
+  "directory": "C:/Users/User/Documents/C++/OnixEngine/build",
   "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IC:/Users/User/Documents/C++/OnixEngine/./include -g -o CMakeFiles\\OnixEngine.dir\\src\\Shader.cpp.obj -c C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Shader.cpp",
   "file": "C:\\Users\\User\\Documents\\C++\\OnixEngine\\src\\Shader.cpp",
   "output": "CMakeFiles\\OnixEngine.dir\\src\\Shader.cpp.obj"

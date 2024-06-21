@@ -6,6 +6,7 @@
 #include "Window.hpp"
 #include "Buffers.hpp"
 #include "Shader.hpp"
+#include "Onix_Physics.hpp"
 
 //# EXTERNALS
 #include <glm/glm.hpp>
@@ -89,7 +90,7 @@ int main(void) {
   float speed = 0.01;
   bool dm = false;
   std::vector<float> history;
-  float rgb[3] = {0.0f, 0.0f, 1.0f};
+  float rgb[3] = {1.0f, 1.0f, 1.0f};
   while (!glfwWindowShouldClose(MainWindow.Get())) {
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_NewFrame();
@@ -105,7 +106,17 @@ int main(void) {
       x -= speed * delta;
     }
     history.push_back(x);
-    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], glm::vec3(x, 0.0f, 0.0));
+    float quad_sizes = 1.0f;
+    glm::vec3 pos1 = glm::vec3( x, 0.0f, 0.0f );
+    Onix::Collision2D_Rect_t firstplayer { pos1.x, pos1.y, quad_sizes, quad_sizes };
+    Onix::Collision2D_Rect_t secondplayer { 0.0f, 0.0f, quad_sizes, quad_sizes };
+    bool res_coll = Onix::IsCollided(firstplayer, secondplayer);
+    if(res_coll) {
+      std::cout << "Collided\r";
+    } else {
+      std::cout << "Not Colliding\r";
+    };
+    MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], pos1);
     glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -140,9 +151,10 @@ int main(void) {
       ImGui::Begin("Onix Debugger", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings);
       ImGui::SetWindowFontScale(1.3f);
       ImGui::Text("you can change the following value");
-      ImGui::SliderFloat("##", &delta, 0.0f, 9.0f, "VALUE: %.5f");
+      ImGui::Text("Onix::IsColliding() = %d", res_coll);
+      ImGui::SliderFloat("##1", &delta, 0.0f, 9.0f, "VALUE: %.5f");
       //ImGui::ProgressBar(delta, ImVec2(200.0f, 20.0f));
-      ImGui::SliderFloat("##", &speed, -1.0f, 5.0f, " = %.9f");
+      ImGui::SliderFloat("##", &speed, -5.0f, 5.0f, " = %.9f");
       ImGui::PlotLines("##", &history[0], history.size(), 0, NULL, FLT_MIN, FLT_MAX, ImVec2(0, 80));
       if(ImGui::Button("Change Background Color"))
         ImGui::OpenPopup("colorpicker");

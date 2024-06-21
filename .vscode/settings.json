@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "thread": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 }
