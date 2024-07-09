@@ -20,11 +20,12 @@ CMAKE_ADDR2LINE:FILEPATH=C:/msys64/mingw64/bin/addr2line.exe
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/msys64/mingw64/bin/ar.exe
 
-//No help, variable specified on the command line.
-CMAKE_BUILD_TYPE:STRING=Debug
+//Choose the type of build, options are: None Debug Release RelWithDebInfo
+// MinSizeRel ...
+CMAKE_BUILD_TYPE:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_CXX_COMPILER:FILEPATH=C:/msys64/mingw64/bin/g++.exe
+//CXX compiler
+CMAKE_CXX_COMPILER:FILEPATH=C:/msys64/mingw64/bin/c++.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -52,8 +53,8 @@ CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 //Libraries linked by default with all C++ applications.
 CMAKE_CXX_STANDARD_LIBRARIES:STRING=-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
 
-//No help, variable specified on the command line.
-CMAKE_C_COMPILER:FILEPATH=C:/msys64/mingw64/bin/gcc.exe
+//C compiler
+CMAKE_C_COMPILER:FILEPATH=C:/msys64/mingw64/bin/cc.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -99,8 +100,8 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+//Enable/Disable output of compile commands during generation.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 
 //Value Computed by CMake.
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/User/Documents/C++/OnixEngine/build/CMakeFiles/pkgRedirects
@@ -252,6 +253,12 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+
+//No help, variable specified on the command line.
+CXX_COMPILER:UNINITIALIZED=g++
+
+//No help, variable specified on the command line.
+C_COMPILER:UNINITIALIZED=gcc
 
 //Value Computed by CMake
 OnixEngine_BINARY_DIR:STATIC=C:/Users/User/Documents/C++/OnixEngine/build

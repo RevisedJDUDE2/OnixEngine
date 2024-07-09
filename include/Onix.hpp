@@ -4,6 +4,7 @@
 #include "Window.hpp"
 #include "Buffers.hpp"
 #include "Shader.hpp"
+#include "Texture.hpp"
 
 typedef struct {
   float Position[3];

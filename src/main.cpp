@@ -7,6 +7,7 @@
 #include "Buffers.hpp"
 #include "Shader.hpp"
 #include "Onix_Physics.hpp"
+#include "Texture.hpp"
 
 //# EXTERNALS
 #include <glm/glm.hpp>
@@ -84,6 +85,10 @@ int main(void) {
   VBO.Unbind();
 
 #pragma endregion
+
+  Onix::Texture dirtText("./dirt.png");
+  dirtText.Generate(GL_RGBA, GL_RGBA);
+
   float x = 0.0f;
   float last;
   bool op = false;
@@ -111,11 +116,6 @@ int main(void) {
     Onix::Collision2D_Rect_t firstplayer { pos1.x, pos1.y, quad_sizes, quad_sizes };
     Onix::Collision2D_Rect_t secondplayer { 0.0f, 0.0f, quad_sizes, quad_sizes };
     bool res_coll = Onix::IsCollided(firstplayer, secondplayer);
-    if(res_coll) {
-      std::cout << "Collided\r";
-    } else {
-      std::cout << "Not Colliding\r";
-    };
     MODEL_MATRICES[0] = glm::translate(MODEL_MATRICES[0], pos1);
     glBindBuffer(GL_ARRAY_BUFFER, Instanced.Get()); // Replace with your actual buffer ID
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &MODEL_MATRICES[0]);
@@ -139,7 +139,7 @@ int main(void) {
     glBindVertexArray(0);
 
     #pragma region IMGUI
-
+    
     if(dm)
       ImGui::ShowDemoWindow(&dm);
     {

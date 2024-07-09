@@ -8,3 +8,4 @@
 #include <stdexcept> //EXCEPT
 #include <algorithm>
 #include <functional>
+#include <stb_image.h>
