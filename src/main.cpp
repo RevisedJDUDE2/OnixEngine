@@ -13,7 +13,8 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-int main(void) {
+int main(int argc, const char** argv) {
+  fprintf(stdout, "-> %d;\n", argc);
   Onix::Init_GLFW();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -96,7 +97,13 @@ int main(void) {
   bool dm = false;
   std::vector<float> history;
   float rgb[3] = {1.0f, 1.0f, 1.0f};
+  bool dbg;
   while (!glfwWindowShouldClose(MainWindow.Get())) {
+    if(argc == 1) {
+      dbg = false;
+    } else if(argc > 1) {
+      dbg = true;
+    }
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -142,7 +149,7 @@ int main(void) {
     
     if(dm)
       ImGui::ShowDemoWindow(&dm);
-    {
+    if(dbg == true) {
       ImGuiStyle& styles = ImGui::GetStyle();
       styles.FrameRounding = 4.0f;
       styles.FrameBorderSize = 1.5f;
