@@ -1,0 +1,19 @@
+# ninja log v5
+17	1644	7425628703318136	CMakeFiles/OnixEngine.dir/src/lib/Onix_Physics.cpp.obj	7343d07a679608c4
+6	1679	7425628703318136	CMakeFiles/OnixEngine.dir/src/lib/Buffers.cpp.obj	e818d66b3a042f51
+12	1694	7425628703786876	CMakeFiles/OnixEngine.dir/src/lib/Onix.cpp.obj	15bb0e70d6bd23bc
+28	1943	7425628705661927	CMakeFiles/OnixEngine.dir/src/lib/Texture.cpp.obj	3d5753e2e2769a30
+34	2045	7425628707068136	CMakeFiles/OnixEngine.dir/src/lib/Window.cpp.obj	520559fb63ff11b2
+23	2086	7425628707893172	CMakeFiles/OnixEngine.dir/src/lib/Shader.cpp.obj	600f6549fc80e4bf
+1658	3094	7425628717673142	CMakeFiles/OnixEngine.dir/src/lib/glad.c.obj	bc0cdb246fe0948a
+2087	3470	7425628720833212	CMakeFiles/OnixEngine.dir/src/lib/imgui_impl_opengl3.cpp.obj	d89751ae8e7f634c
+2046	3547	7425628721623354	CMakeFiles/OnixEngine.dir/src/lib/imgui_impl_glfw.cpp.obj	572bd82e9a3fcb96
+1944	7509	7425628759564566	CMakeFiles/OnixEngine.dir/src/lib/imgui_draw.cpp.obj	ee09dbae236ad57d
+3095	7914	7425628763627061	CMakeFiles/OnixEngine.dir/src/lib/imgui_tables.cpp.obj	dd28a22022b798b7
+3547	8364	7425628770377362	CMakeFiles/OnixEngine.dir/src/lib/stb_image.cpp.obj	e82edfd9feff0340
+3470	10656	7425628793626431	CMakeFiles/OnixEngine.dir/src/lib/imgui_widgets.cpp.obj	2eabb2f9f317682
+1679	10871	7425628795813901	CMakeFiles/OnixEngine.dir/src/lib/imgui.cpp.obj	927f146b9026199
+7509	11147	7425628798626503	CMakeFiles/SampleGL.dir/src/main-gl.cpp.obj	226b087aff1ca94d
+1694	14767	7425628834876283	CMakeFiles/OnixEngine.dir/src/lib/imgui_demo.cpp.obj	20c1c75e545129b0
+14768	14947	7425628835813848	OnixEngine.lib	f7dcd173742d13d8
+14947	15514	7425628842063759	SampleGL.exe	a8760cfbc0d424ca

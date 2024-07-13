@@ -4,9 +4,9 @@
 namespace Onix {
     class Texture {
     private:
-        std::string m_ImageFileName;
-        int m_ImageWidth, m_ImageHeight, m_Channels;
-        unsigned char* m_ImageHandle;
+      std::string m_ImageFileName;
+      int m_ImageWidth{}, m_ImageHeight{}, m_Channels{};
+      unsigned char* m_ImageHandle{};
         unsigned int m_TextureHandle;
         GLenum m_Target;
         /*DEFAULT PARAMS*/
