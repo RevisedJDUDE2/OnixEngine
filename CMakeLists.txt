@@ -11,7 +11,7 @@ target_link_libraries(OnixEngine glfw3 opengl32)
 
 project(SampleGL VERSION 1.0)
 
-add_executable(SampleGL src/main-gl.cpp)
+add_executable(SampleGL "src/main-gl.cpp")
 target_include_directories(SampleGL PUBLIC ./include)
 target_link_directories(SampleGL PUBLIC ./)
 target_link_libraries(SampleGL PUBLIC OnixEngine opengl32)
