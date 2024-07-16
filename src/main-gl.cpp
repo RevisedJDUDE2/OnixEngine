@@ -55,13 +55,27 @@ int main() {
   glViewport(0, 0, 800, 600);
 
   glEnable(GL_DEPTH_TEST);
-  while (!glfwWindowShouldClose(window.Get())) {
+  bool condition = false;
+  float cooldown = 0.5;
+  float last;
+  while (!window.ShouldClose()) {
     float time_attr = (float)glfwGetTime();
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     int maxx, maxy;
     glfwGetWindowSize(window.Get(), &maxx, &maxy);
     glViewport(0, 0, maxx, maxy);
+
+    float current = (float)glfwGetTime();
+    if (window.isKeyPressed(GLFW_KEY_F11) && (current - last > cooldown)) {
+      condition = !condition;
+      window.SetFullscreen(condition);
+      last = current;
+    }
+    if (window.isKeyPressed(GLFW_KEY_ESCAPE)) {
+      glfwTerminate();
+      break;
+    }
 
     //DEFINE
     glm::mat4 model = glm::mat4(1.0f);
@@ -74,7 +88,8 @@ int main() {
     projection = glm::perspective(glm::radians(45.0f), (float)maxx / (float)maxy, 0.1f, 100.0f);
 
     Program.UseProgram();
-
+    
+    //SET
     unsigned int Location_OF_model = glGetUniformLocation(Program.GetHandle(), "model");
     glUniformMatrix4fv(Location_OF_model, 1, GL_FALSE, glm::value_ptr(model));
 

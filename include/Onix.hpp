@@ -20,4 +20,5 @@ namespace Onix {
   void SetVertexAttribPointer(int Index, int Count, GLsizei Stride, const GLvoid* Offset);
   void SetVertexAttribPointer(Onix::Buffer& buff, int Index, int Count, GLsizei Stride, const GLvoid* Offset);
   void EnableVertexAttrib(Onix::Buffer& buff, int Index);
+  void ClearColorAndSet(float r, float g, float b);
 }
