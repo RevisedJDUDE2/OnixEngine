@@ -5,15 +5,15 @@ void Onix::Buffer::InitBuffer(void) {
   this->hsntbuff = true;
 }
 
-Onix::Buffer::Buffer(GLenum Type) {
-  if (Type == GL_VERTEX_ARRAY) {
-    this->m_Type = GL_VERTEX_ARRAY;
+Onix::Buffer::Buffer(bool isVao) noexcept {
+  if (isVao) {
+    this->m_Type = 0;
     glGenVertexArrays(1, &this->m_Handle);
   }
 }
 
-Onix::Buffer::Buffer(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Usage) {
-  if (Type != GL_VERTEX_ARRAY) {
+Onix::Buffer::Buffer(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Usage) noexcept {
+  if (Type != 0 && this->isVao == true) {
     glGenBuffers(1, &this->m_Handle);
     glBindBuffer(Type, this->m_Handle);
     glBufferData(Type, Size, Data, Usage);
@@ -22,7 +22,7 @@ Onix::Buffer::Buffer(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Us
 }
 
 void Onix::Buffer::Bind(void) const {
-  if (this->m_Type != GL_VERTEX_ARRAY) {
+  if (this->m_Type != 0) {
     glBindBuffer(this->m_Type, this->m_Handle);
   } else {
     glBindVertexArray(this->m_Handle);
@@ -30,7 +30,7 @@ void Onix::Buffer::Bind(void) const {
 }
 
 void Onix::Buffer::Unbind(void) const {
-  if (this->m_Type != GL_VERTEX_ARRAY) {
+  if (this->m_Type != 0) {
     glBindBuffer(this->m_Type, 0);
   } else {
     glBindVertexArray(0);
@@ -45,13 +45,6 @@ void Onix::Buffer::SetConfigs(int i, bool CONFIG) {
   }
 };
 
-void Onix::Buffer::SetCalled(bool c) {
-  this->m_has_called_enable = c;
-}
-
-bool Onix::Buffer::GetStatus(void) const {
-  return this->m_has_called_enable;
-}
 unsigned int Onix::Buffer::Get(void) const noexcept {
   return this->m_Handle;
 }
