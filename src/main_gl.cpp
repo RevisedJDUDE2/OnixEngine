@@ -26,16 +26,12 @@ int main() {
       2, 3, 0
   };
 
-  Onix::Buffer VertexArray(true); //NOW it just a bool that tells Buffer that its a vao
+  Onix::Buffer VertexArray; //NOW it just a bool that tells Buffer that its a vao
+  VertexArray.Specify(true);
   Onix::Buffer VertexBuffer(GL_ARRAY_BUFFER, sizeof(RectangleMesh), RectangleMesh, GL_STATIC_DRAW);
   Onix::Buffer ElementArray(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
-
-  //Onix::SetVertexAttribPointer(0, 3, sizeof(Vertices), (void**)offsetof(Vertices, Position));
-  //ENGINE NOW BROKEN LETS GOO
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertices), (void**)offsetof(Vertices, Position));
-
-  VertexArray.Bind();  //TODO: fix Bind() and Unbind() because there oposite
+  Onix::SetVertexAttribPointer(false, 0, 3, sizeof(Vertices), (void**)offsetof(Vertices, Position));
+  VertexArray.Bind();
 
   while (!window.ShouldClose()) {
     Onix::ClearColorAndSet(0.0, 0.0, 0.0);

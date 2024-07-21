@@ -196,7 +196,7 @@ build OnixEngine.lib: CXX_STATIC_LIBRARY_LINKER__OnixEngine_Debug CMakeFiles\Oni
 
 build cmake_object_order_depends_target_SampleGL: phony || cmake_object_order_depends_target_OnixEngine
 
-build CMakeFiles\SampleGL.dir\src\main-gl.cpp.obj: CXX_COMPILER__SampleGL_unscanned_Debug C$:\Users\User\Documents\C++\OnixEngine\src\main-gl.cpp || cmake_object_order_depends_target_SampleGL
+build CMakeFiles\SampleGL.dir\src\main_gl.cpp.obj: CXX_COMPILER__SampleGL_unscanned_Debug C$:\Users\User\Documents\C++\OnixEngine\src\main_gl.cpp || cmake_object_order_depends_target_SampleGL
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -MDd -Zi
   INCLUDES = -IC:\Users\User\Documents\C++\OnixEngine\.\include
   OBJECT_DIR = CMakeFiles\SampleGL.dir
@@ -212,7 +212,7 @@ build CMakeFiles\SampleGL.dir\src\main-gl.cpp.obj: CXX_COMPILER__SampleGL_unscan
 #############################################
 # Link the executable SampleGL.exe
 
-build SampleGL.exe: CXX_EXECUTABLE_LINKER__SampleGL_Debug CMakeFiles\SampleGL.dir\src\main-gl.cpp.obj | OnixEngine.lib || OnixEngine.lib
+build SampleGL.exe: CXX_EXECUTABLE_LINKER__SampleGL_Debug CMakeFiles\SampleGL.dir\src\main_gl.cpp.obj | OnixEngine.lib || OnixEngine.lib
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -MDd -Zi
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = OnixEngine.lib  opengl32.lib  glfw3.lib  opengl32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
