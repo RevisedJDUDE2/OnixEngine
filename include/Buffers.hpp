@@ -1,23 +1,22 @@
 #pragma once
 #include "Essentials.hpp"
-
 namespace Onix {
   class Buffer {
+  private:
     unsigned int m_Handle;
-    GLenum m_Type = 0; //DEFAULT VAL
-    bool hsntbuff;
-    bool automaticBinding = false;
-    bool isVao = false;
-    bool SpecifyCalled = false;
-    void m_Create(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Usage);
+    GLenum m_Type = 0;
+    bool isVao;
+    int SIGNAL;
   public:
-    void InitBuffer(void);
-    void Specify(bool isVao);
-    Buffer();
-    Buffer(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Usage) noexcept;
+    Buffer(bool isVao, GLenum Type);
+    void SetData(GLsizeiptr Size, GLvoid* Data, GLenum Usage);
     void Bind(void) const;
     void Unbind(void) const;
-    void SetConfigs(int i, bool CONFIG);
-    unsigned int Get(void) const noexcept;
+    /** @brief it's basicaly just glGen
+    */
+    void GenBuffers(void);
+    unsigned int GetHandle(void) const;
+    void SendSignal(int SIG);
+    int GetSignal(void);
   };
 }

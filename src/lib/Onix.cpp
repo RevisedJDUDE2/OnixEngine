@@ -4,6 +4,7 @@
 #include "Onix.hpp"
 #include "Onix.hpp"
 #include "Onix.hpp"
+#include "Onix.hpp"
 #include "Buffers.hpp"
 
 void Onix::Assert(bool STATEMENT, int LINE_NUM, const char* FILE) {
@@ -62,10 +63,10 @@ void Onix::EnableVertexAttrib(Onix::Buffer& buff, int Index) {
 
 void Onix::SetVertexAttribPointer(bool isEnabled, int Index, int Count, GLsizei Stride, const GLvoid* Offset) {
   if (isEnabled == true) {
-    glVertexAttribPointer(Index, Count, GL_FALSE, GL_FALSE, Stride, Offset);
+    glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
   } else {
     Onix::EnableVertexAttrib(Index);
-    glVertexAttribPointer(Index, Count, GL_FALSE, GL_FALSE, Stride, Offset);
+    glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
   }
 }
 
@@ -77,6 +78,13 @@ bool Onix::EnableVertexAttrib(int Index) {
 void Onix::ClearColorAndSet(float r, float g, float b) {
   glClear(GL_COLOR_BUFFER_BIT);
   glClearColor(r, g, b, 1.0f);
+}
+
+void Onix::CheckGLError(const std::string& msg) {
+  GLenum err;
+  while ((err = glGetError()) != GL_NO_ERROR) {
+    Onix::ThrowError("OpenGL Error After: " + msg + " >> " +std::to_string(err));
+  }
 }
 
 READ_ONLY Onix::SwapBuffersAndPollEvents(ONIX_PARAMTYPE_WINDOW window) {

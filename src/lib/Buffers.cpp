@@ -1,71 +1,81 @@
 #include "Buffers.hpp"
+#include "Buffers.hpp"
+#include "Buffers.hpp"
 #include "Onix.hpp"
+#include "Buffers.hpp"
+#include "Onix.hpp"
+#include <iostream>
 
-void Onix::Buffer::m_Create(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Usage) {
-  ONIX_ASSERT(this->isVao);
-  if (Type != 0 && false == this->isVao && false == this->SpecifyCalled) {
-    glGenBuffers(1, &this->m_Handle);
-    glBindBuffer(Type, this->m_Handle);
-    glBufferData(Type, Size, Data, Usage);
-  } else if(this->SpecifyCalled == true && this->isVao == true) {
-    glGenVertexArrays(1, &this->m_Handle);
-  }
-  this->m_Type = Type;
-}
-
-void Onix::Buffer::InitBuffer(void) {
-  glGenBuffers(1, &this->m_Handle);
-  this->hsntbuff = true;
-}
-
-void Onix::Buffer::Specify(bool isVao) {
+Onix::Buffer::Buffer(bool isVao, GLenum Type) {
+  this->SIGNAL = 0; // init
   this->isVao = isVao;
-  this->SpecifyCalled = true;
-  this->m_Create(0, 0, 0, 0);
+  this->m_Handle = 0;
+  if (isVao) {
+    this->m_Type = 0;
+  }
+  else {
+    this->m_Type = Type;
+  }
 }
 
-Onix::Buffer::Buffer() {
-  this->isVao = false;
-  this->SpecifyCalled = false;
-  this->m_Type = 0;
-}
-
-Onix::Buffer::Buffer(GLenum Type, GLsizeiptr Size, const GLvoid* Data, GLenum Usage) noexcept {
-  //if (Type != 0 && false == this->isVao && false == this->SpecifyCalled) {
-  //  glGenBuffers(1, &this->m_Handle);
-  //  glBindBuffer(Type, this->m_Handle);
-  //  glBufferData(Type, Size, Data, Usage);
-  //} else if(this->SpecifyCalled == true && this->isVao == true) {
-  //  glGenVertexArrays(1, &this->m_Handle);
-  //}
-  //this->m_Type = Type;
-  this->m_Create(Type, Size, Data, Usage);
+void Onix::Buffer::SetData(GLsizeiptr Size, GLvoid* Data, GLenum Usage) {
+  if (!this->isVao) {
+    if (this->SIGNAL != 222)
+      glGenBuffers(1, &this->m_Handle);
+    this->Bind();
+    glBufferData(this->m_Type, Size, Data, Usage);
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR) {
+      std::cout << "glBufferData Error: " << error << std::endl;
+    }
+  }
+  else {
+    if (this->SIGNAL != 222)
+      glGenVertexArrays(1, &this->m_Handle);
+    //this->Bind();
+  }
 }
 
 void Onix::Buffer::Bind(void) const {
-  if (this->m_Type != 0 && false == this->isVao) {
+  if (!this->isVao) {
     glBindBuffer(this->m_Type, this->m_Handle);
-  } else {
+    std::cout << "Bound Buffer with handle: " << this->m_Handle << std::endl;
+  }
+  else {
     glBindVertexArray(this->m_Handle);
+    std::cout << "Bound VAO with handle: " << this->m_Handle << std::endl;
   }
 }
 
 void Onix::Buffer::Unbind(void) const {
-  if (this->m_Type != 0 && false == this->isVao) {
+  if (!this->isVao) {
     glBindBuffer(this->m_Type, 0);
-  } else {
+  }
+  else {
     glBindVertexArray(0);
   }
 }
 
-void Onix::Buffer::SetConfigs(int i, bool CONFIG) {
-  if (i == 0) {
-    this->automaticBinding = CONFIG;
-  } else if (i == 1) {
-    this->hsntbuff = CONFIG;
+void Onix::Buffer::GenBuffers(void) {
+  this->SIGNAL = 222;
+  if (!this->isVao) {
+    glGenBuffers(1, &this->m_Handle);
+    std::cout << "Generated Buffer with handle: " << this->m_Handle << std::endl;
   }
-};
+  else {
+    glGenVertexArrays(1, &this->m_Handle);
+    std::cout << "Generated VAO with handle: " << this->m_Handle << std::endl;
+  }
+}
 
-unsigned int Onix::Buffer::Get(void) const noexcept {
+unsigned int Onix::Buffer::GetHandle(void) const {
   return this->m_Handle;
+}
+
+void Onix::Buffer::SendSignal(int SIG) {
+  this->SIGNAL = SIG;
+}
+
+int Onix::Buffer::GetSignal(void) {
+  return this->SIGNAL;
 }

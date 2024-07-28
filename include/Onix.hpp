@@ -31,6 +31,7 @@ namespace Onix {
   void SetVertexAttribPointer(bool isEnabled, int Index, int Count, GLsizei Stride, const GLvoid* Offset);
   bool EnableVertexAttrib(int Index);
   void ClearColorAndSet(float r, float g, float b);
+  void CheckGLError(const std::string& msg);
   // VS giving me weird ass errors
   READ_ONLY SwapBuffersAndPollEvents(ONIX_PARAMTYPE_WINDOW window);
 }
