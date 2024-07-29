@@ -8,43 +8,55 @@ int main() {
   Onix::Window window("Game", 800, 600);
   Onix::Init_GLAD();
 
-  Onix::Shader VertexShader("shader.vert", GL_VERTEX_SHADER);
+  Onix::Shader VertexShader("./resources/shader.vert", GL_VERTEX_SHADER);
   VertexShader.CheckError();
-  Onix::Shader FragmentShader("shader.frag", GL_FRAGMENT_SHADER);
+  Onix::Shader FragmentShader("./resources/shader.frag", GL_FRAGMENT_SHADER);
   FragmentShader.CheckError();
   //GL_TYPE_EX_SHADER_PROGRAM is my own #define not opengls
   Onix::Shader Program(GL_TYPE_EX_SHADER_PROGRAM, VertexShader, FragmentShader);
   Program.CheckError();
 
-  Vertices RectangleMesh[4] = {
-    { { -0.5, -0.5, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0 } },
-    { {  0.5, -0.5, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0 } },
-    { {  0.5,  0.5, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0 } },
-    { { -0.5,  0.5, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0 } }
+  float RectangleMesh[] = {
+    -0.5, -0.5, 0.0, 
+     0.5, -0.5, 0.0, 
+     0.5,  0.5, 0.0,
+    -0.5,  0.5, 0.0
   };
 
-  unsigned int Indices[] = {
+  unsigned int Indices[6] = {
       0, 1, 2,
       2, 3, 0
   };
   
-  Onix::VertexArray VAO;
-  Onix::Buffer VBO(GL_ARRAY_BUFFER, sizeof(RectangleMesh), RectangleMesh, GL_STATIC_DRAW);
-  Onix::Buffer EBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
-  Onix::EnableVertexAttrib(0);
-  Onix::SetVertexAttribPointer(true, 0, 3, sizeof(Vertices), (void**)offsetof(Vertices, Position));
-  Onix::CheckGLError("Onix::SetVertexAttribPointer");
-  EBO.Unbind();
-  VBO.Unbind();
-  VAO.Unbind();
+  unsigned int VBO, VAO, EBO;
+  glGenVertexArrays(1, &VAO);
+  glBindVertexArray(VAO);
+  
+  glGenBuffers(1, &VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(RectangleMesh), RectangleMesh, GL_STATIC_DRAW);
+
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void**)0);
+  glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
   while (!window.ShouldClose()) {
     Onix::ClearColorAndSet(0.0, 0.0, 0.0);
     Program.UseProgram();
-    VAO.Bind();
+    glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glfwSwapBuffers(window.Get());
     glfwPollEvents();
   }
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
   return 0;
 }
