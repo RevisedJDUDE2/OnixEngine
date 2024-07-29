@@ -1,10 +1,4 @@
 #include "Onix.hpp"
-#include "Onix.hpp"
-#include "Onix.hpp"
-#include "Onix.hpp"
-#include "Onix.hpp"
-#include "Onix.hpp"
-#include "Onix.hpp"
 #include "Buffers.hpp"
 
 void Onix::Assert(bool STATEMENT, int LINE_NUM, const char* FILE) {
@@ -40,27 +34,6 @@ void Onix::Init_GLAD(void) {
     fprintf(stderr, "Oh you're fucked\n");
   }   
 }
-//REFACTORE THIS ASSESS
-/*
-void Onix::SetVertexAttribPointer(int Index, int Count, GLsizei Stride, const GLvoid* Offset) {
-  glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
-  glEnableVertexAttribArray(Index);
-}
-
-void Onix::SetVertexAttribPointer(Onix::Buffer& buff, int Index, int Count, GLsizei Stride, const GLvoid* Offset) {
-  glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
-  if(buff.GetStatus() != true) {
-    glEnableVertexAttribArray(Index);
-  }
-}
-
-
-void Onix::EnableVertexAttrib(Onix::Buffer& buff, int Index) {
-  buff.SetCalled(true);
-  glEnableVertexAttribArray(Index);
-}
-*/
-
 void Onix::SetVertexAttribPointer(bool isEnabled, int Index, int Count, GLsizei Stride, const GLvoid* Offset) {
   if (isEnabled == true) {
     glVertexAttribPointer(Index, Count, GL_FLOAT, GL_FALSE, Stride, Offset);
