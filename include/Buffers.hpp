@@ -10,6 +10,7 @@ namespace Onix {
     void Bind(void);
     void Unbind(void);
     unsigned int GetHandle(void);
+    void DeleteBuffer(void);
   };
   class VertexArray {
   private:
@@ -18,5 +19,6 @@ namespace Onix {
     VertexArray();
     void Bind(void);
     void Unbind(void);
+    void DeleteVertexArray(void);
   };
 }

@@ -1,4 +1,7 @@
 #include "Texture.hpp"
+#include "Texture.hpp"
+#include "Texture.hpp"
+#include "Texture.hpp"
 #include "Onix.hpp"
 
 //Onix::Texture::Texture(std::string filename) {
@@ -6,6 +9,12 @@
 //    glGenTextures(1, &this->m_TextureHandle);
 //    glBindTexture(this->m_Target, this->m_TextureHandle);
 //}
+
+Onix::Texture::Texture(std::string filename) {
+  this->m_ImageFileName = filename;
+  glGenTextures(1, &this->m_TextureHandle);
+  glBindTexture(this->m_Target, this->m_TextureHandle);
+}
 
 void Onix::Texture::SetParameter(GLenum Param, GLint Value) {
     this->UsingDefaultParamters = false;
@@ -26,4 +35,11 @@ void Onix::Texture::Generate(GLint internalFormat, GLenum Format) {
         Onix::ThrowError("File (" + this->m_ImageFileName + ") Does not exist!");
     }
     stbi_image_free(this->m_ImageHandle);
-};
+}
+void Onix::Texture::Bind(void) {
+  glBindTexture(this->m_Target, this->m_TextureHandle);
+}
+void Onix::Texture::Unbind(void) {
+  glBindTexture(this->m_Target, 0);
+}
+;

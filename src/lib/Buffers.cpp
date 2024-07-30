@@ -1,5 +1,7 @@
 #include "Buffers.hpp"
 #include "Buffers.hpp"
+#include "Buffers.hpp"
+#include "Buffers.hpp"
 #include "Onix.hpp"
 #include <iostream>
 Onix::Buffer::Buffer(GLenum Type, GLsizeiptr Size, GLvoid* Data, GLenum Usage) {
@@ -24,6 +26,9 @@ void Onix::Buffer::Unbind(void) {
 unsigned int Onix::Buffer::GetHandle(void) {
   return this->m_Handle;
 }
+void Onix::Buffer::DeleteBuffer(void) {
+  glDeleteBuffers(1, &this->m_Handle);
+}
 //VAO
 Onix::VertexArray::VertexArray() {
   glGenVertexArrays(1, &this->m_Handle);
@@ -36,4 +41,8 @@ void Onix::VertexArray::Bind(void) {
 
 void Onix::VertexArray::Unbind(void) {
   glBindVertexArray(0);
+}
+
+void Onix::VertexArray::DeleteVertexArray(void) {
+  glDeleteVertexArrays(1, &this->m_Handle);
 }

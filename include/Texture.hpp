@@ -12,12 +12,12 @@ namespace Onix {
         /*DEFAULT PARAMS*/
         bool UsingDefaultParamters = true;
     public:
-        Texture(std::string filename) {
-            this->m_ImageFileName = filename;
-            glGenTextures(1, &this->m_TextureHandle);
-            glBindTexture(this->m_Target, this->m_TextureHandle);
-        };
+      Texture(std::string filename);
         void SetParameter(GLenum Param, GLint Value);
         void Generate(GLint internalFormat, GLenum Format);
+        void Bind(void);
+        void Unbind(void);
+        [[deprecated("Not implemented yet!")]]
+        void DeleteTexture(void);
     };
 }

@@ -33,5 +33,6 @@ namespace Onix {
   void ClearColorAndSet(float r, float g, float b);
   void CheckGLError(const std::string& msg);
   // VS giving me weird ass errors
+  [[deprecated]]
   READ_ONLY SwapBuffersAndPollEvents(ONIX_PARAMTYPE_WINDOW window);
 }
