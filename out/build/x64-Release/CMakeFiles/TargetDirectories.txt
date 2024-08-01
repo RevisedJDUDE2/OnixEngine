@@ -1,4 +1,0 @@
-C:/Users/User/Documents/C++/OnixEngine/out/build/x64-Release/CMakeFiles/OnixEngine.dir
-C:/Users/User/Documents/C++/OnixEngine/out/build/x64-Release/CMakeFiles/SampleGL.dir
-C:/Users/User/Documents/C++/OnixEngine/out/build/x64-Release/CMakeFiles/edit_cache.dir
-C:/Users/User/Documents/C++/OnixEngine/out/build/x64-Release/CMakeFiles/rebuild_cache.dir

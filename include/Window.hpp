@@ -12,5 +12,6 @@ namespace Onix {
     int ShouldClose(void) const;
     bool isKeyPressed(int glfw_key);
     void SetFullscreen(bool condition);
+    void SetHint(int Hint, int Value);
   };
 }

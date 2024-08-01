@@ -1,4 +1,5 @@
 #include "Onix.hpp"
+#include "Object.hpp"
 
 const float version = 1.7;
 
@@ -6,8 +7,9 @@ int main() {
   printf("Game Version %.1f\n", version);
   Onix::Init_GLFW();
   Onix::Window window("Game", 800, 600);
+  window.SetHint(GLFW_RESIZABLE, GLFW_FALSE);
   Onix::Init_GLAD();
-
+  //LOAD SHADERS AND CAPTURE ERRRORS
   Onix::Shader VertexShader("./resources/shader.vert", GL_VERTEX_SHADER);
   VertexShader.CheckError();
   Onix::Shader FragmentShader("./resources/shader.frag", GL_FRAGMENT_SHADER);
@@ -17,6 +19,7 @@ int main() {
   Program.CheckError();
 
   float RectangleMesh[] = {
+    //coord      texture coord
     -0.5, -0.5, 0.0, 0.0,  
      0.5, -0.5, 1.0, 0.0,
      0.5,  0.5, 1.0, 1.0,
@@ -27,6 +30,13 @@ int main() {
       0, 1, 2,
       2, 3, 0
   };
+
+  glm::vec2 positions[20] = {};
+
+  unsigned int InstancedVBO;
+  glGenBuffers(1, &InstancedVBO);
+  glBindBuffer(GL_ARRAY_BUFFER, InstancedVBO);
+  glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(glm::vec2), nullptr, GL_DYNAMIC_DRAW);
   
   unsigned int VBO, VAO, EBO;
   glGenVertexArrays(1, &VAO);
@@ -46,6 +56,12 @@ int main() {
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void**)(2 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
+  glEnableVertexAttribArray(2);
+  glBindBuffer(GL_ARRAY_BUFFER, InstancedVBO);
+
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
+  glVertexAttribDivisor(2, 1);
+
   int imageWidth, imageHeight, imageChannels;
   unsigned char* imageHandle = stbi_load("./resources/dirt.jpg", &imageWidth, &imageHeight, &imageChannels, 0);
 
@@ -64,10 +80,15 @@ int main() {
 
   glBindTexture(GL_TEXTURE_2D, 0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-  
+  ObjectType cat;
+  object_init(&cat);
+  cat.GetParent();
+
+  float lasttime = (float)glfwGetTime(), currenttime, delta;
   while (!window.ShouldClose()) {
     Onix::ClearColorAndSet(0.0, 0.0, 0.0);
     Program.UseProgram();
@@ -77,18 +98,38 @@ int main() {
     
     glBindVertexArray(VAO);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 20);
+
+    currenttime = (float)glfwGetTime();
+    delta = currenttime - lasttime;
+    lasttime = currenttime;
 
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 proj = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0f));
+    float coord[2] = {0.0, 0.0};
+    view = glm::translate(view, glm::vec3(-positions[0].x, -positions[0].y, -3.0f));
     proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, 0.1f, 100.0f);
+    int maxx, maxy;
+    glfwGetWindowSize(window.Get(), &maxx, &maxy);
+    glViewport(0, 0, maxx, maxy);
     unsigned int viewloc = glGetUniformLocation(Program.GetHandle(), "view");
     unsigned int projloc = glGetUniformLocation(Program.GetHandle(), "proj");
     glUniformMatrix4fv(viewloc, 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv(projloc, 1, GL_FALSE, &proj[0][0]);
 
-    Onix::SwapBuffersAndPollEvents(243);
+    if (window.isKeyPressed(GLFW_KEY_D))
+      positions[0].x += 0.5f * delta;
+    if (window.isKeyPressed(GLFW_KEY_A))
+      positions[0].x -= 0.5f * delta;
+    if (window.isKeyPressed(GLFW_KEY_S))
+      positions[0].y -= 0.5f * delta;
+    if (window.isKeyPressed(GLFW_KEY_W))
+      positions[0].y += 0.5f * delta;
+
+    glBindBuffer(GL_ARRAY_BUFFER, InstancedVBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 20 * sizeof(glm::vec2), positions);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     glfwSwapBuffers(window.Get());
     glfwPollEvents();
   }

@@ -2,6 +2,7 @@
 #include "Window.hpp"
 #include "Window.hpp"
 #include "Window.hpp"
+#include "Window.hpp"
 
 Onix::Window::Window(std::string title, int width, int height) {
   this->m_Handle = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -48,4 +49,8 @@ void Onix::Window::SetFullscreen(bool condition) {
       glfwSetWindowAttrib(this->m_Handle, GLFW_RESIZABLE, GLFW_TRUE);
       glfwSetWindowAttrib(this->m_Handle, GLFW_FLOATING, GLFW_FALSE);
   }
+}
+
+void Onix::Window::SetHint(int Hint, int Value) {
+  glfwSetWindowAttrib(this->m_Handle, Hint, Value);
 }
