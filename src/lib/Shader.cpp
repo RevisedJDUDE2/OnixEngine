@@ -29,6 +29,8 @@ Onix::Shader::Shader(GLenum Type, Onix::Shader Vertex, Onix::Shader Fragment) {
     glAttachShader(this->m_Handle, Fragment.GetHandle());
     glLinkProgram(this->m_Handle);
     glUseProgram(this->m_Handle);
+    glDeleteShader(Vertex.GetHandle());
+    glDeleteShader(Fragment.GetHandle());
   }
 }
 

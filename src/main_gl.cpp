@@ -31,12 +31,12 @@ int main() {
       2, 3, 0
   };
 
-  glm::vec2 positions[20] = {};
+  glm::vec2 positions[2] = {};
 
   unsigned int InstancedVBO;
   glGenBuffers(1, &InstancedVBO);
   glBindBuffer(GL_ARRAY_BUFFER, InstancedVBO);
-  glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(glm::vec2), nullptr, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(glm::vec2), nullptr, GL_DYNAMIC_DRAW);
   
   unsigned int VBO, VAO, EBO;
   glGenVertexArrays(1, &VAO);
@@ -84,51 +84,97 @@ int main() {
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+  float QuadMesh[] = {
+    -1.0, -1.0, 1.0, 0.0, 0.0,
+     1.0, -1.0, 0.0, 1.0, 0.0,
+     1.0,  1.0, 0.0, 0.0, 1.0,
+
+     1.0,  1.0, 0.0, 0.0, 1.0,
+    -1.0,  1.0, 0.0, 1.0, 0.0,
+    -1.0, -1.0, 1.0, 0.0, 0.0
+  };
+
+  Onix::Shader CatVertexShader("./resources/cat.shader.vert", GL_VERTEX_SHADER);
+  CatVertexShader.CheckError();
+  Onix::Shader CatFragmentShader("./resources/cat.shader.frag", GL_FRAGMENT_SHADER);
+  CatFragmentShader.CheckError();
+  Onix::Shader CatShaderProgram(GL_TYPE_EX_SHADER_PROGRAM, CatVertexShader, CatFragmentShader);
+  CatShaderProgram.CheckError();
+
   ObjectType cat;
   object_init(&cat);
-  cat.GetParent();
+  cat.GetParent(&cat);
+  cat.CreateObject(&cat);
+  cat.SetVboData(&cat, GL_ARRAY_BUFFER, sizeof(QuadMesh), QuadMesh, GL_STATIC_DRAW);
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void**)0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void**)(2 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  cat.Unbind(&cat);
 
   float lasttime = (float)glfwGetTime(), currenttime, delta;
+  bool Show_Game = false, Show_Menu = true;
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   while (!window.ShouldClose()) {
+
     Onix::ClearColorAndSet(0.0, 0.0, 0.0);
-    Program.UseProgram();
+    if (Show_Game == true) {
+      Program.UseProgram();
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureHandle);
-    
-    glBindVertexArray(VAO);
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, textureHandle);
 
-    glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 20);
+      glBindVertexArray(VAO);
 
-    currenttime = (float)glfwGetTime();
-    delta = currenttime - lasttime;
-    lasttime = currenttime;
+      glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 2);
 
-    glm::mat4 view = glm::mat4(1.0f);
-    glm::mat4 proj = glm::mat4(1.0f);
-    float coord[2] = {0.0, 0.0};
-    view = glm::translate(view, glm::vec3(-positions[0].x, -positions[0].y, -3.0f));
-    proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, 0.1f, 100.0f);
-    int maxx, maxy;
-    glfwGetWindowSize(window.Get(), &maxx, &maxy);
-    glViewport(0, 0, maxx, maxy);
-    unsigned int viewloc = glGetUniformLocation(Program.GetHandle(), "view");
-    unsigned int projloc = glGetUniformLocation(Program.GetHandle(), "proj");
-    glUniformMatrix4fv(viewloc, 1, GL_FALSE, &view[0][0]);
-    glUniformMatrix4fv(projloc, 1, GL_FALSE, &proj[0][0]);
+      currenttime = (float)glfwGetTime();
+      delta = currenttime - lasttime;
+      lasttime = currenttime;
 
-    if (window.isKeyPressed(GLFW_KEY_D))
-      positions[0].x += 0.5f * delta;
-    if (window.isKeyPressed(GLFW_KEY_A))
-      positions[0].x -= 0.5f * delta;
-    if (window.isKeyPressed(GLFW_KEY_S))
-      positions[0].y -= 0.5f * delta;
-    if (window.isKeyPressed(GLFW_KEY_W))
-      positions[0].y += 0.5f * delta;
+      glm::mat4 view = glm::mat4(1.0f);
+      glm::mat4 proj = glm::mat4(1.0f);
+      float coord[2] = { 0.0, 0.0 };
+      view = glm::translate(view, glm::vec3(-positions[0].x, -positions[0].y, -3.0f));
+      proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, 0.1f, 100.0f);
+      int maxx, maxy;
+      glfwGetWindowSize(window.Get(), &maxx, &maxy);
+      glViewport(0, 0, maxx, maxy);
+      unsigned int viewloc = glGetUniformLocation(Program.GetHandle(), "view");
+      unsigned int projloc = glGetUniformLocation(Program.GetHandle(), "proj");
+      glUniformMatrix4fv(viewloc, 1, GL_FALSE, &view[0][0]);
+      glUniformMatrix4fv(projloc, 1, GL_FALSE, &proj[0][0]);
 
-    glBindBuffer(GL_ARRAY_BUFFER, InstancedVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, 20 * sizeof(glm::vec2), positions);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+      if (window.isKeyPressed(GLFW_KEY_D))
+        positions[0].x += 0.5f * delta;
+      if (window.isKeyPressed(GLFW_KEY_A))
+        positions[0].x -= 0.5f * delta;
+      if (window.isKeyPressed(GLFW_KEY_S))
+        positions[0].y -= 0.5f * delta;
+      if (window.isKeyPressed(GLFW_KEY_W))
+        positions[0].y += 0.5f * delta;
+      if (window.isKeyPressed(GLFW_KEY_SPACE))
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+      if (window.isKeyPressed(GLFW_KEY_ENTER))
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+      glBindBuffer(GL_ARRAY_BUFFER, InstancedVBO);
+      glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * sizeof(glm::vec2), positions);
+      glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    if (Show_Menu == true) {
+      CatShaderProgram.UseProgram();
+      glUniform1f(glGetUniformLocation(CatShaderProgram.GetHandle(), "alpha"), 0.5);
+      cat.Bind(&cat);
+      glDrawArrays(GL_TRIANGLES, 0, 6);
+      if (window.isKeyPressed(GLFW_KEY_TAB)) {
+        Show_Game = true;
+        Show_Menu = false;
+      }
+      cat.Unbind(&cat);
+    }
 
     glfwSwapBuffers(window.Get());
     glfwPollEvents();

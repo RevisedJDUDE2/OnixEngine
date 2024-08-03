@@ -1,7 +1,4 @@
 #include "Texture.hpp"
-#include "Texture.hpp"
-#include "Texture.hpp"
-#include "Texture.hpp"
 #include "Onix.hpp"
 
 //Onix::Texture::Texture(std::string filename) {
