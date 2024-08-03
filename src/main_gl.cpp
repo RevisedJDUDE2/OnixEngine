@@ -1,18 +1,20 @@
 #include "Onix.hpp"
 #include "Object.hpp"
 
-const float version = 1.7;
+const float version = 2.1;
 
 int main() {
   printf("Game Version %.1f\n", version);
+  const std::string resource_folder = "./resources/";
+  const char* res_folder = "./resources/";
   Onix::Init_GLFW();
   Onix::Window window("Game", 800, 600);
   window.SetHint(GLFW_RESIZABLE, GLFW_FALSE);
   Onix::Init_GLAD();
   //LOAD SHADERS AND CAPTURE ERRRORS
-  Onix::Shader VertexShader("./resources/shader.vert", GL_VERTEX_SHADER);
+  Onix::Shader VertexShader(resource_folder + "shader.vert", GL_VERTEX_SHADER);
   VertexShader.CheckError();
-  Onix::Shader FragmentShader("./resources/shader.frag", GL_FRAGMENT_SHADER);
+  Onix::Shader FragmentShader(resource_folder + "shader.frag", GL_FRAGMENT_SHADER);
   FragmentShader.CheckError();
   //GL_TYPE_EX_SHADER_PROGRAM is my own #define not opengls
   Onix::Shader Program(GL_TYPE_EX_SHADER_PROGRAM, VertexShader, FragmentShader);
@@ -62,8 +64,11 @@ int main() {
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
   glVertexAttribDivisor(2, 1);
 
+  char DIRT_[100];
   int imageWidth, imageHeight, imageChannels;
-  unsigned char* imageHandle = stbi_load("./resources/dirt.jpg", &imageWidth, &imageHeight, &imageChannels, 0);
+  strcpy(DIRT_, res_folder);
+  strcat(DIRT_, "dirt.jpg");
+  unsigned char* imageHandle = stbi_load((const char*)DIRT_, &imageWidth, &imageHeight, &imageChannels, 0);
 
   unsigned int textureHandle;
   glGenTextures(1, &textureHandle);
@@ -94,9 +99,9 @@ int main() {
     -1.0, -1.0, 1.0, 0.0, 0.0
   };
 
-  Onix::Shader CatVertexShader("./resources/cat.shader.vert", GL_VERTEX_SHADER);
+  Onix::Shader CatVertexShader(resource_folder + "cat.shader.vert", GL_VERTEX_SHADER);
   CatVertexShader.CheckError();
-  Onix::Shader CatFragmentShader("./resources/cat.shader.frag", GL_FRAGMENT_SHADER);
+  Onix::Shader CatFragmentShader(resource_folder + "cat.shader.frag", GL_FRAGMENT_SHADER);
   CatFragmentShader.CheckError();
   Onix::Shader CatShaderProgram(GL_TYPE_EX_SHADER_PROGRAM, CatVertexShader, CatFragmentShader);
   CatShaderProgram.CheckError();

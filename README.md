@@ -6,7 +6,7 @@ namespace Onix {
     class Window;
     class Buffer; //BROKEN
     class VertexArray; //BROKEN
-    class Texture; //NOT TESTED
+    class Texture; //BROKEN
 }
 ```
 ### For now the library uses:
