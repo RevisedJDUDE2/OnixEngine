@@ -28,12 +28,18 @@ void object_unbind_resources(ObjectType* mobj) {
 void object_bind_resources(ObjectType* mobj) {
   glBindVertexArray(mobj->VAO);
 }
+//typedef void(*DrawObjectFunc)(struct Object* mobj);
+void object_draw_object(Object* mobj, GLsizei count) {
+  mobj->Bind(mobj);
+  glDrawArrays(GL_TRIANGLES, 0, count);
+}
 void object_init(ObjectType* obj) {
   obj->GetParent = object_get_parent;
   obj->CreateObject = object_create_object;
   obj->SetVboData = object_set_vbo_data;
   obj->Unbind = object_unbind_resources;
   obj->Bind = object_bind_resources;
+  obj->DrawObject = object_draw_object;
   obj->VBO = 0;
   obj->VAO = 0;
 }

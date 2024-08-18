@@ -16,5 +16,5 @@ vec3 applySepia(in vec3 color) {
 void main() {
   vec3 func_rets = applySepia(oColor);
   //vec3 func_rets = noise3(0.1);
-  FragColor = vec4(func_rets, alpha);
+  FragColor = vec4(oColor, alpha);
 }

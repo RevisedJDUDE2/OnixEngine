@@ -11,6 +11,9 @@ int main() {
   Onix::Window window("Game", 800, 600);
   window.SetHint(GLFW_RESIZABLE, GLFW_FALSE);
   Onix::Init_GLAD();
+  std::string OpenGL_Version = std::string((const char*)glGetString(GL_VERSION));
+  Onix::ThrowError("Opengl Version: " + OpenGL_Version, "[LOG]");
+  Onix::ThrowError("STARTING glfwGetTime = " + std::to_string((float)glfwGetTime()) + "", "[LOG]");
   //LOAD SHADERS AND CAPTURE ERRRORS
   Onix::Shader VertexShader(resource_folder + "shader.vert", GL_VERTEX_SHADER);
   VertexShader.CheckError();
@@ -72,6 +75,7 @@ int main() {
 
   unsigned int textureHandle;
   glGenTextures(1, &textureHandle);
+  glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textureHandle);
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -121,9 +125,14 @@ int main() {
   bool Show_Game = false, Show_Menu = true;
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  float alpha = 1.0f;
+  int counter = 0;
   while (!window.ShouldClose()) {
 
     Onix::ClearColorAndSet(0.0, 0.0, 0.0);
+    currenttime = (float)glfwGetTime();
+    delta = currenttime - lasttime;
+    lasttime = currenttime;
     if (Show_Game == true) {
       Program.UseProgram();
 
@@ -133,14 +142,12 @@ int main() {
       glBindVertexArray(VAO);
 
       glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 2);
+      positions[1].x = 0.0;
+      positions[1].y = positions[1].y - 0.1 * delta;
 
-      currenttime = (float)glfwGetTime();
-      delta = currenttime - lasttime;
-      lasttime = currenttime;
 
       glm::mat4 view = glm::mat4(1.0f);
       glm::mat4 proj = glm::mat4(1.0f);
-      float coord[2] = { 0.0, 0.0 };
       view = glm::translate(view, glm::vec3(-positions[0].x, -positions[0].y, -3.0f));
       proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, 0.1f, 100.0f);
       int maxx, maxy;
@@ -171,10 +178,17 @@ int main() {
 
     if (Show_Menu == true) {
       CatShaderProgram.UseProgram();
-      glUniform1f(glGetUniformLocation(CatShaderProgram.GetHandle(), "alpha"), 0.5);
+      glUniform1f(glGetUniformLocation(CatShaderProgram.GetHandle(), "alpha"), alpha);
+      alpha = alpha - 0.5f * delta;
+      if (counter == 13459) {
+        Show_Game = true;
+        Show_Menu = false;
+      }
+      //Onix::ThrowError("alpha is " + std::to_string(alpha) + " ;\n", "[LOG]");
+      counter++;
       cat.Bind(&cat);
       glDrawArrays(GL_TRIANGLES, 0, 6);
-      if (window.isKeyPressed(GLFW_KEY_TAB)) {
+      if (window.isKeyPressed(GLFW_KEY_F2)) {
         Show_Game = true;
         Show_Menu = false;
       }

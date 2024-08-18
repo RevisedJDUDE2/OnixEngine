@@ -12,7 +12,7 @@ void Onix::ThrowError(std::string ErrorMessage) {
 }
 
 void Onix::ThrowError(std::string ErrorMessage, std::string type) {
-  std::cout << ErrorMessage << ErrorMessage << std::endl;
+  std::cout << type  << " " << ErrorMessage << std::endl;
 }
 
 void Onix::Init_GLFW(void) {
@@ -66,4 +66,8 @@ READ_ONLY Onix::SwapBuffersAndPollEvents(ONIX_PARAMTYPE_WINDOW window) {
   glfwPollEvents();
   */
   return IS_EXPERIMENTAL_FUNCTION;
+}
+
+void Onix::_No_Implementation_Yet(void) {
+  Onix::ThrowError("Calling a function whose not been implemented yet", "[ONIX]");
 }

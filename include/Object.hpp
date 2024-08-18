@@ -6,6 +6,7 @@ typedef void(*CreateObjectFunc)(struct Object* mobj);
 typedef void(*SetVboDataFunc)(struct Object* mobj, GLenum type, GLsizeiptr size, GLvoid* data, GLenum usage);
 typedef void(*UnbindResourcesFunc)(struct Object* mobj);
 typedef void(*BindResourcesFunc)(struct Object* mobj);
+typedef void(*DrawObjectFunc)(struct Object* mobj, GLsizei count);
 struct Object {
   //FUNCTIONS:
   GetParentFunc GetParent;
@@ -13,6 +14,7 @@ struct Object {
   SetVboDataFunc SetVboData;
   UnbindResourcesFunc Unbind;
   BindResourcesFunc Bind;
+  DrawObjectFunc DrawObject;
   unsigned int VAO, VBO;
   //FOR VBO_USAGE_TYPE its GL_ STATIC | DYNAMIC _ DRAW | STREAM | COPY eg... GL_STATIC_DRAW
   GLenum Vbo_Type, Vbo_UsageType;

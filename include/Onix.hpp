@@ -32,6 +32,7 @@ namespace Onix {
   bool EnableVertexAttrib(int Index);
   void ClearColorAndSet(float r, float g, float b);
   void CheckGLError(const std::string& msg);
+  void _No_Implementation_Yet(void);
   // VS giving me weird ass errors
   [[deprecated]]
   READ_ONLY SwapBuffersAndPollEvents(ONIX_PARAMTYPE_WINDOW window);
